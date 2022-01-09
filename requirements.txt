@@ -1,0 +1,13 @@
+ipykernel
+lightgbm==3.2.1
+matplotlib
+nbformat
+numpy==1.19
+optuna
+pandas
+Pillow
+plotly
+scikit-learn
+scipy
+seaborn
+shap
