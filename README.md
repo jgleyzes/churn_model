@@ -1,4 +1,4 @@
-# churn_model
+# Churn model
 
 
 This repo contains some ML exploration on to predict churn using the dataset in `data/Churn_Modelling.csv`. The main file to follow the exploration is this [notebook](notebooks/model_exploration.ipynb)
@@ -14,10 +14,10 @@ We will also monitor the area under the curve of the Receiver Operating Characte
 At the end of the exploration, the best performing model is saved to [inference/model/tuned_lgbm.pickle](inference/model/tuned_lgbm.pickle) which is exposed in an API via [opyrator](https://github.com/ml-tooling/opyrator).
 This has been packaged into a docker image, which can be pulled with
 
-`docker pull jgleyzes/churn_model:v1`
+`docker pull jgleyzes/churn_model:latest`
 
 Then, it can be run with 
 
-`docker run -p 8051:8051 -t -i jgleyzes/churn_model:v1`
+`docker run -p 8051:8051 -t -i jgleyzes/churn_model:latest`
 
 The app can be accessed in your browser at `http://0.0.0.0:8051/`
