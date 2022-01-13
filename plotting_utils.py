@@ -1,4 +1,4 @@
-from typing import Iterable, Union
+from typing import Dict, Iterable, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -28,15 +28,51 @@ def plot_importance(importances: Iterable[float], feature_names: Iterable[str]):
     fig.show()
 
 
+def _get_scatter_precision_recall(
+    X: Union[pd.DataFrame, np.ndarray],
+    y: Union[pd.Series, np.ndarray],
+    model: BaseEstimator,
+    name: str = None,
+):
+    """Compute precision and recall for model on X, y and prepare for plot"""
+    scores = get_scores(X, model)
+    precision, recall, thresholds = sklearn.metrics.precision_recall_curve(y, scores)
+
+    return go.Scatter(x=recall, y=precision, hovertext=thresholds, name=name)
+
+
 def plot_precision_recall(
     X: Union[pd.DataFrame, np.ndarray],
     y: Union[pd.Series, np.ndarray],
     model: BaseEstimator,
 ):
-    """Compute and plot precision and recall for model on X, y"""
-    scores = get_scores(X, model)
-    precision, recall, thresholds = sklearn.metrics.precision_recall_curve(y, scores)
-    fig = go.Figure(data=go.Scatter(x=recall, y=precision, hovertext=thresholds))
+    """Plot precision and recall for a single model on X, y"""
+
+    fig = go.Figure(data=_get_scatter_precision_recall(X, y, model))
+    fig.update_layout(
+        xaxis_title="Recall",
+        yaxis_title="Precision",
+    )
+    fig.show()
+
+
+def plot_precision_recall_multiples(
+    X: Union[pd.DataFrame, np.ndarray],
+    y: Union[pd.Series, np.ndarray],
+    dict_models: Dict[str, BaseEstimator],
+):
+    """Plot precision and recall for a multiple models on X, y"""
+
+    fig = go.Figure(
+        data=[
+            _get_scatter_precision_recall(X, y, model, name)
+            for name, model in dict_models.items()
+        ]
+    )
+    fig.update_layout(
+        xaxis_title="Recall",
+        yaxis_title="Precision",
+    )
     fig.show()
 
 

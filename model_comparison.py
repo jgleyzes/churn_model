@@ -1,4 +1,5 @@
 from collections import defaultdict
+from copy import copy
 from typing import Dict, Tuple
 
 import numpy as np
@@ -33,6 +34,7 @@ class ModelComparator:
         X_test: pd.DataFrame,
         y_test: pd.Series,
     ) -> Tuple[float, float]:
+        model = copy(model)
         model.fit(X_train, y_train)
         precision, roc_auc = list(
             get_precision_and_roc_auc(X_test, y_test, model).values()
